@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New LibraryStock{% endblock %}
+
+{% block body %}
+    <h1>Create new LibraryStock</h1>
+
+    {{ include('library_stock/_form.html.twig') }}
+
+    <a href="{{ path('app_library_stock_index') }}">back to list</a>
+{% endblock %}

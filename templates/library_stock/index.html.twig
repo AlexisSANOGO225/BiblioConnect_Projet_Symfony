@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LibraryStock index{% endblock %}
+
+{% block body %}
+    <h1>LibraryStock index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Address</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for library_stock in library_stocks %}
+            <tr>
+                <td>{{ library_stock.id }}</td>
+                <td>{{ library_stock.title }}</td>
+                <td>{{ library_stock.address }}</td>
+                <td>
+                    <a href="{{ path('app_library_stock_show', {'id': library_stock.id}) }}">show</a>
+                    <a href="{{ path('app_library_stock_edit', {'id': library_stock.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_library_stock_new') }}">Create new</a>
+{% endblock %}

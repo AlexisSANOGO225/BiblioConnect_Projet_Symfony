@@ -1,3 +1,12 @@
 body {
-    background-color: skyblue;
+    background-color: #f1f3f5;
 }
+
+
+/* Personnaliser la ligne horizontale */
+.hr {
+    border: none;
+    border-top: 2px solid #000; /* Augmenter l'épaisseur ici */
+    margin: 0;
+  }
+  

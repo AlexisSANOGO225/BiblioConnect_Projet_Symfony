@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home - BibloConnect
+{% endblock %}
+
+{% block body %}
+	{% for label, messages in app.flashes %}
+		<div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+			{% for message in messages %}
+				<p>{{ message }}</p>
+			{% endfor %}
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	{% endfor %}
+	<section>
+		<div class="container py-5">
+			<div class="row justify-content-center">
+				<div class="d-flex align-items-center mb-4">
+					<h2 class="mb-0 me-auto">Nos derniers livres</h2>
+					<hr class="hr flex-grow-1 mx-3"/>
+					<a href="{{ path('app_books_index') }}" class="text-decoration-none text-dark">Voir tout</a>
+				</div>
+
+				{% for book in books %}
+					<div class="col-12 col-md-6 col-lg-4 p-3">
+						<div class="card text-black">
+							<img src="https://picsum.photos/1200/800?random={{ book.id }}" class="card-img-top" alt="Apple Computer"/>
+							<div class="card-body">
+								<div>
+									<div class="d-flex justify-content-between">
+										<span>Titre</span>
+										<span>{{ book.title }}</span>
+									</div>
+								</div>
+								<div>
+									<div class="d-flex justify-content-between">
+										<span>Thème</span>
+										<span>{{ book.theme }}</span>
+									</div>
+								</div>
+
+								<div>
+									{% if book.booksInventories|length > 0 %}
+										<div class="d-flex justify-content-between">
+											<span>Prix</span>
+											<span>{{ book.firstPrice }}
+												€</span>
+										</div>
+									{% else %}
+										<div class="d-flex justify-content-between">
+											<span>Prix</span>
+											<span>Pas de prix disponible</span>
+										</div>
+									{% endif %}
+								</div>
+
+								<div class="d-flex justify-content-between font-weight-bold mt-4">
+									<a href="{{ path('app_books_show', {'id': book.id}) }}" class="btn btn-info w-48 text-white" data-mdb-ripple-init>Voir les détails</a>
+
+									<form method="POST" action="{{ path('app_book_reserve', {'id': book.id}) }}" class="w-48">
+										<button type="submit" class="btn w-100 text-white" style="background-color: #f2880f;" data-mdb-ripple-init>Réserver</button>
+									</form>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+{% endblock %}

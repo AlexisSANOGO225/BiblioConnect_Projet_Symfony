@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LibraryStock{% endblock %}
+
+{% block body %}
+    <h1>LibraryStock</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ library_stock.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ library_stock.title }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ library_stock.address }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_library_stock_index') }}">back to list</a>
+
+    <a href="{{ path('app_library_stock_edit', {'id': library_stock.id}) }}">edit</a>
+
+    {{ include('library_stock/_delete_form.html.twig') }}
+{% endblock %}

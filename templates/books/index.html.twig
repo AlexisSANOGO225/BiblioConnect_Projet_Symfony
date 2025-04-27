@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue - BiblioConnect
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="d-flex align-items-center justify-content-between mb-4">
+			<h2 class="mb-0">Catalogue de tous les livres</h2>
+
+			<form method="get" action="{{ path('app_books_index') }}" class="d-flex">
+				<div class="input-group">
+					<input type="search" id="form1" name="search" class="form-control" placeholder="Rechercher..."/>
+					<button type="submit" class="btn btn-primary">
+						<i class="fas fa-search"></i>
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<hr class="hr"/>
+
+		<div class="row m-2">
+			{% for book in books %}
+
+				<div class="col-12 col-md-6 col-lg-4 p-3">
+					<div class="card text-black">
+						<img src="https://picsum.photos/1200/800?random={{ book.id }}" class="card-img-top" alt="Apple Computer"/>
+						<div class="card-body">
+							<div>
+								<div class="d-flex justify-content-between">
+									<span>Titre</span>
+									<span>{{ book.title }}</span>
+								</div>
+							</div>
+							<div>
+								<div class="d-flex justify-content-between">
+									<span>Thème</span>
+									<span>{{ book.theme }}</span>
+								</div>
+							</div>
+
+							<div>
+								{% if book.firstPrice is not null %}
+									<div class="d-flex justify-content-between">
+										<span>Prix</span>
+										<span>{{ book.firstPrice }}
+											€</span>
+									</div>
+								{% else %}
+									<div class="d-flex justify-content-between">
+										<span>Prix</span>
+										<span>Pas de prix disponible</span>
+									</div>
+								{% endif %}
+							</div>
+
+							<div class="d-flex justify-content-between font-weight-bold mt-4">
+								<a href="{{ path('app_books_show', {'id': book.id}) }}" class="btn btn-info w-48 text-white" data-mdb-ripple-init>Voir les détails</a>
+
+								<form method="POST" action="{{ path('app_book_reserve', {'id': book.id}) }}" class="w-48">
+									<button type="submit" class="btn w-100 text-white" style="background-color: #f2880f;" data-mdb-ripple-init>Réserver</button>
+								</form>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<div class="card" style="width: 18rem;">
+					<div class="card-header">
+						Aucun livre trouvé
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+
+	<a href="{{ path('app_books_new') }}">Create new</a>
+{% endblock %}

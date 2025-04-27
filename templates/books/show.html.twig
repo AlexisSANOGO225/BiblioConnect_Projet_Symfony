@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book Details - BiblioConnect
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-center">Les details du livre :
+		{{ book.title }}</h1>
+	<section style="background-color: #eee;">
+		<div class="container py-5">
+
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="card mb-4">
+						<div class="card-body text-center">
+							<img src="https://picsum.photos/1200/800?random={{ book.id }}" alt="avatar" class="img-fluid">
+							<h5 class="my-3">Titre :
+								{{ book.title }}</h5>
+							<p class="text-muted mb-1">Theme :
+								{{ book.theme }}</p>
+							<p class="text-muted mb-4">Prix :
+								{{ price ? price : 'Pas de prix disponible' }}
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-8">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="row py-3">
+								<div class="col-sm-3">
+									<p class="mb-0">Auteur</p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-0">{{ authorFirstName }}
+										{{ authorLastName }}</p>
+									<!-- Afficher le prénom et le nom de l'auteur -->
+								</div>
+							</div><hr>
+							<div class="row py-3">
+								<div class="col-sm-3">
+									<p class="mb-0">Catégorie</p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-0">{{ categoryTitle }}</p>
+									<!-- Afficher le prénom et le nom de l'auteur -->
+								</div>
+							</div><hr>
+							<div class="row py-3">
+								<div class="col-sm-3">
+									<p class="mb-0">Date de publication</p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-0">{{ book.publicationDate ? book.publicationDate| date('d-m-Y') : '' }}</p>
+								</div>
+							</div>
+							<hr>
+							<div class="row py-3">
+								<div class="col-sm-3">
+									<p class="mb-0">Description</p>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-0">{{ book.description }}</p>
+								</div>
+							</div>
+							<hr>
+						</div>
+
+					</div>
+					<div class="buttonsList d-flex justify-content-center">
+						<a href="{{ path('app_books_index') }}" class="btn btn-secondary text-white mx-2" data-mdb-ripple-init>Catalogue</a>
+
+						<form method="POST" action="{{ path('app_book_reserve', {'id': book.id}) }}" class="w-48">
+							<button type="submit" class="btn w-100 text-white" style="background-color: #f2880f;" data-mdb-ripple-init>Réserver</button>
+						</form>
+					</div>
+
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col-7">
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h4 class="text-body mb-0">Tous les commentaires ({{ reviews|length }})</h4>
+					</div>
+					{% for review in reviews %}
+						<div class="card mb-3">
+							<div class="card-body">
+								<div class="d-flex flex-start">
+									<img class="rounded-circle shadow-1-strong me-3" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20({{ random(1, 15) }}).webp" alt="avatar" width="40" height="40"/>
+									<div class="w-100">
+										<div class="d-flex justify-content-between align-items-center mb-3">
+											<h6 class="text-primary fw-bold mb-0">
+												{{ review.accounts.username }}
+												<span class="text-body ms-2">
+													Note :
+													{{ review.rating }}
+												</span>
+											</h6>
+											<p class="mb-0">{{ review.createdAt|date('d-m-Y H:i') }}</p>
+										</div>
+										<div class="d-flex justify-content-between align-items-center mb-3">
+											<p class="mb-0">{{ review.comment }}</p>
+										</div>
+										<div class="d-flex justify-content-between align-items-center">
+											<p class="small mb-0" style="color: #aaa;">
+												<a href="#!" class="link-grey">Supprimer</a>
+												•
+												<a href="#!" class="link-grey">Masquer</a>
+											</p>
+											<div class="d-flex flex-row">
+												<i class="fas fa-star text-warning me-2"></i>
+												<i class="far fa-check-circle" style="color: #aaa;"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="col-5">
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h4 class="text-body mb-0">Ajouter un commentaire</h4>
+					</div>
+					<div class="card">
+						<div class="card-body p-4">
+							<div class="d-flex flex-start w-100">
+								<img class="rounded-circle shadow-1-strong me-3" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="65" height="65"/>
+								<div class="w-100">
+									<h5>Message :</h5>
+
+									{# Utilisation du formulaire Symfony #}
+									{{ form_start(reviewForm) }}
+									<div class="form-outline mb-3">
+										{{ form_row(reviewForm.comment, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+									</div>
+
+									<div class="my-3">
+										{{ form_row(reviewForm.rating, {'attr': {'class': 'form-control', 'min': 1, 'max': 5, 'step': 1, 'placeholder': 'Donnez un avis (Entre 1 et 5)'}}) }}
+									</div>
+
+									<div class="d-flex justify-content-end mt-3">
+										<button type="submit" class="btn btn-success">
+											Envoyer
+											<i class="fas fa-long-arrow-alt-right ms-1"></i>
+										</button>
+									</div>
+									{{ form_end(reviewForm) }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</section>
+{% endblock %}

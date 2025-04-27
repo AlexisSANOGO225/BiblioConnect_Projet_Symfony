@@ -4,14 +4,32 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Accounts
+                property: email
+
+    # Définir les rôles par défaut et les systèmes d'accès
+    role_hierarchy:
+        ROLE_VISITOR:           [ROLE_USER]
+        ROLE_ADMIN:             [ROLE_VISITOR:]
+        ROLE_SUPER_ADMIN:       [ROLE_ADMIN, OLE_ALLOWED_TO_SWITCH]
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
+            form_login:
+                login_path: app_log_in
+                check_path: app_log_in
+                default_target_path: app_home
+            logout:
+                path: /logout
+                target: /log/in 
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -22,8 +40,15 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_LIBRARIAN] }
+        - { path: ^/accounts, roles: ROLE_ADMIN }
+        - { path: ^/reviews, roles: ROLE_ADMIN }
+        - { path: ^/visitor, roles: ROLE_VISITOR }
+        - { path: ^/profile, roles: ROLE_USER }
+
+        
+
+
 
 when@test:
     security:

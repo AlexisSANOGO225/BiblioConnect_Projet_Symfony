@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Authors index
+{% endblock %}
+
+{% block body %}
+	<section class="gradient-custom-2">
+		<div class="container">
+			<div class="row mt-5">
+				<div class="col-8">
+					<h3>Liste des auteurs</h3>
+				</div>
+				<div class="col-4">
+					{% if is_granted('ROLE_ADMIN') or  is_granted('ROLE_LIBRARIAN') %}
+
+						<a class="btn btn-primary btn-rounded btn-sm fw-bold" href="{{ path('app_authors_new') }}" data-mdb-ripple-color="dark">
+							Ajouter un nouvel auteur
+						</a>
+					{% endif %}
+
+				</div>
+			</div>
+			<table class="table align-middle mb-0 bg-white mt-4">
+				<thead class="bg-light">
+					<tr>
+						<th>Nom</th>
+						<th>Nombre de livres</th>
+						<th>Action 1
+						</th>
+						<th>Action 2</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for author in authors %}
+						<tr>
+							<td>
+								<div class="d-flex align-items-center">
+									<img src="https://mdbootstrap.com/img/new/avatars/{{ random(1..20) }}.jpg" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
+									<div class="ms-3">
+										<p class="fw-bold mb-1">{{ author.lastName }}</p>
+										<p class="text-muted mb-0">{{ author.FirstName }}</p>
+									</div>
+								</div>
+							</td>
+							<td>
+								<p class="fw-normal mb-1">{{ author.booksCount }}</p>
+							</td>
+							<td>
+								<a class="btn btn-secondary btn-rounded btn-sm fw-bold" href="{{ path('app_authors_show', {'id': author.id}) }}" data-mdb-ripple-color="dark">
+									Afficher
+								</a>
+							</td>
+							<td>
+								{% if is_granted('ROLE_ADMIN') or  is_granted('ROLE_LIBRARIAN') %}
+									<a class="btn btn-info btn-rounded btn-sm fw-bold" href="{{ path('app_authors_edit', {'id': author.id}) }}" data-mdb-ripple-color="dark">
+										Modifier
+									</a>
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5">Aucun auteur trouvé</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</section>
+{% endblock %}

@@ -58,7 +58,11 @@
 									<a href="{{ path('app_books_show', {'id': book.id}) }}" class="btn btn-info w-48 text-white" data-mdb-ripple-init>Voir les détails</a>
 
 									<form method="POST" action="{{ path('app_book_reserve', {'id': book.id}) }}" class="w-48">
-										<button type="submit" class="btn w-100 text-white" style="background-color: #f2880f;" data-mdb-ripple-init>Réserver</button>
+										{% if app.user %}
+											<button type="submit" class="btn w-100 text-white" style="background-color: #f2880f;" data-mdb-ripple-init>Réserver</button>
+										{% else %}
+											<a href="{{ path('app_log_in') }}" class="btn w-100 text-white" style="background-color: #f2880f;">Réserver</a>
+										{% endif %}
 									</form>
 								</div>
 

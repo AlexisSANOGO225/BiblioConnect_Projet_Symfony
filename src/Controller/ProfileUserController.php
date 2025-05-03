@@ -29,13 +29,14 @@ class ProfileUserController extends AbstractController
         foreach ($reservations as $reservation) {
             $book = $reservation->getBooks();  // Récupérer l'entité Books liée à la réservation
             $bookInventory = $book->getBooksInventories()->first();  // Récupérer l'inventaire du livre (on prend le premier inventaire, si plusieurs)
-
+            $languageTitle = $bookInventory && $bookInventory->getLanguages()?$bookInventory->getLanguages()->getTitle() : 'Langue non disponible';
             // Collecter les informations pour chaque réservation
             $reservationDetails[] = [
                 'id' => $reservation->getId(),  // Ajout de l'ID de la réservation
                 'bookTitle' => $book ? $book->getTitle() : 'Titre non disponible',
                 'price' => $bookInventory ? $bookInventory->getPrice() : 'Prix non disponible',
-                'createdAt' => $reservation->getCreatedAt() ? $reservation->getCreatedAt()->format('Y-m-d H:i:s') : 'Date non disponible'
+                'createdAt' => $reservation->getCreatedAt() ? $reservation->getCreatedAt()->format('Y-m-d H:i:s') : 'Date non disponible',
+                'language' => $languageTitle,
             ];
             
         }

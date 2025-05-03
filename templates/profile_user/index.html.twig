@@ -42,13 +42,16 @@
 					<div class="card mb-4">
 						<div class="card-body">
 							<div class="row pb-3">
-								<div class="col-4">
+								<div class="col-3">
 									<h3>Titre du livre</h3>
+								</div>
+								<div class="col-2">
+									<h3>Langue</h3>
 								</div>
 								<div class="col-2">
 									<h3>Prix</h3>
 								</div>
-								<div class="col-4">
+								<div class="col-3">
 									<h3>Date de réservation</h3>
 								</div>
 								<div class="col-2">
@@ -60,13 +63,16 @@
 								{% for reservation in reservationDetails %}
 									<hr>
 									<div class="row mb-3">
-										<div class="col-4">
+										<div class="col-3">
 											<p class="text-muted">{{ reservation.bookTitle }}</p>
+										</div>
+										<div class="col-2">
+											<p class="text-muted">{{ reservation.language }}</p>
 										</div>
 										<div class="col-2">
 											<p class="text-muted">{{ reservation.price }}</p>
 										</div>
-										<div class="col-4">
+										<div class="col-3">
 											<p class="text-muted">{{ reservation.createdAt | date('d-m-Y H:i:s') }}</p>
 										</div>
 								{% if is_granted('ROLE_ADMIN') or  is_granted('ROLE_LIBRARIAN') %}
